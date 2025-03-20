@@ -1,0 +1,33 @@
+services:
+  flow-collector:
+    image: elastiflow/flow-collector:7.6.0
+    container_name: flow-collector
+    restart: 'unless-stopped'
+    network_mode: 'host'
+    env_file: elastiflow.env
+    volumes:
+      # mkdir -p /etc/elastiflow && chown -R 1000:1000 /etc/elastiflow
+      - elastiflow-etc:/etc/elastiflow
+      # mkdir -p /var/lib/elastiflow/flowcoll && chown -R 1000:1000 /var/lib/elastiflow
+      - elastiflow-data:/var/lib/elastiflow/flowcoll
+      - elastiflow-maxmind:/etc/elastiflow/maxmind:z
+
+volumes:
+  elastiflow-etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/cisco/docker-volumes/elastiflow-etc
+      o: bind
+  elastiflow-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/cisco/docker-volumes/elastiflow-data
+      o: bind
+  elastiflow-maxmind:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/cisco/docker-volumes/elastiflow-maxmind
+      o: bind
